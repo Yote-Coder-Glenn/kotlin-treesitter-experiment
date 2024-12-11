@@ -8,7 +8,7 @@ import java.io.File
 @Component
 class ParserDisplay {
 
-    fun parse(code: String): String {
+    fun parse(code: String): List<String> {
 
         val classloader = Thread.currentThread().contextClassLoader
         val f = classloader.getResource("test-files/main.js")
@@ -34,11 +34,13 @@ class ParserDisplay {
         val cursor = TSQueryCursor()
         cursor.exec(query, rootNode)
         val match = TSQueryMatch()
+        val matches = mutableListOf<String>()
         while (cursor.nextMatch(match)) {
             match.captures.forEach {
                 val node = it.node
 
                 val text = source.substring(node.startByte, node.endByte)
+                matches.add(text)
                 println("---")
                 println(text)
 
@@ -46,7 +48,7 @@ class ParserDisplay {
         }
 
 
-        return "fff"
+        return matches
     }
 
 }
